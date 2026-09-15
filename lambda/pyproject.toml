@@ -1,0 +1,22 @@
+[project]
+name = "alerts-scheduler-dispatcher"
+version = "1.0.0"
+description = "Lambda that triggers GitHub Actions workflow_dispatch as a GitHub App"
+requires-python = ">=3.13"
+dependencies = [
+    "rsa>=4.9",
+]
+
+[dependency-groups]
+dev = [
+    "ruff",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+exclude = ["build/"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+ignore = ["E501"]

@@ -1,0 +1,22 @@
+.DS_Store
+
+# Terraform build artifacts
+build/
+*.zip
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+crash.log
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.uv/
+
+# Never commit real secrets
+terraform.tfvars
+*.auto.tfvars
