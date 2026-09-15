@@ -24,4 +24,5 @@ export TF_VAR_gh_app_private_key="-----BEGIN RSA PRIVATE KEY-----
 -----END RSA PRIVATE KEY-----"
 
 make plan  # creates S3 state bucket, terraform plan
-make apply # terraform apply, writes creds to SSM, IAM role/policy, packages + deploys Lambda, creates EventBridge schedules.
+make apply # terraform apply, writes creds to SSM, IAM role/policy, 
+           # packages + deploys Lambda, creates EventBridge schedules.
