@@ -50,16 +50,21 @@ resource "aws_ssm_parameter" "gh_app_private_key" {
 
 resource "null_resource" "lambda_build" {
   triggers = {
-    handler      = filebase64sha256("${path.module}/lambda/handler.py")
-    requirements = filebase64sha256("${path.module}/lambda/requirements.txt")
+    handler = filebase64sha256("${path.module}/lambda/handler.py")
+    uv_lock = filebase64sha256("${path.module}/lambda/uv.lock")
   }
 
   provisioner "local-exec" {
+    # Installs the exact versions in lambda/uv.lock. --locked fails if the
+    # lockfile is out of date with lambda/pyproject.toml.
     command = <<-EOT
       set -euo pipefail
       rm -rf "${path.module}/build"
       mkdir -p "${path.module}/build"
-      uv pip install --target "${path.module}/build" -r "${path.module}/lambda/requirements.txt"
+      REQS="$(mktemp)"
+      uv export --project "${path.module}/lambda" --locked --no-dev --no-hashes --no-emit-project --quiet -o "$REQS"
+      uv pip install --target "${path.module}/build" -r "$REQS"
+      rm -f "$REQS"
       cp "${path.module}/lambda/handler.py" "${path.module}/build/"
     EOT
   }

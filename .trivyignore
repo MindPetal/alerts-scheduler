@@ -1,0 +1,5 @@
+# Trivy IaC scan suppressions
+# Only suppress findings that are by design, with the reason.
+
+# S3 tf state bucket uses AWS-managed KMS keys - CMKs not warranted for this workload
+AVD-AWS-0132
