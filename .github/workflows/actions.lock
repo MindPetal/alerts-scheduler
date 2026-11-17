@@ -5,41 +5,14 @@ version: 'v0.0.3'
 workflows:
     '.github/workflows/alerts-scheduler-build.yaml':
         - 'actions/checkout@v7.0.1'
-        - 'aquasecurity/trivy-action@v0.35.0'
         - 'hashicorp/setup-terraform@v4.0.0'
         - 'zizmorcore/zizmor-action@v0.8.1'
 dependencies:
-    'actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809':
-        ref: 'v4.2.4'
-        commit: 'sha1-0400d5f644dc74513175e3cd8d07132dd4860809'
-        owner_id: 44036562
-        repo_id: 215566462
-    'actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8':
-        ref: 'v5.0.0'
-        commit: 'sha1-08c6903cd8c0fde910a37f88322edcfb5dd907a8'
-        owner_id: 44036562
-        repo_id: 197814629
     'actions/checkout@v7.0.1':
         ref: 'v7.0.1'
         commit: 'sha1-3d3c42e5aac5ba805825da76410c181273ba90b1'
         owner_id: 44036562
         repo_id: 197814629
-    'aquasecurity/setup-trivy@e6c2c5e321ed9123bda567646e2f96565e34abe1':
-        ref: 'main'
-        commit: 'sha1-e6c2c5e321ed9123bda567646e2f96565e34abe1'
-        owner_id: 12783832
-        repo_id: 869952525
-        uses:
-            - 'actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809'
-            - 'actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8'
-    'aquasecurity/trivy-action@v0.35.0':
-        ref: 'v0.35.0'
-        commit: 'sha1-57a97c7e7821a5776cebc9bb87c984fa69cba8f1'
-        owner_id: 12783832
-        repo_id: 268833180
-        uses:
-            - 'actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809'
-            - 'aquasecurity/setup-trivy@e6c2c5e321ed9123bda567646e2f96565e34abe1'
     'github/codeql-action@9b3254085494b55a0f7c4c2b3d2d52cc712ce370':
         ref: 'v4.39.1'
         commit: 'sha1-9b3254085494b55a0f7c4c2b3d2d52cc712ce370'

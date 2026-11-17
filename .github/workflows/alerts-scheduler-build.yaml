@@ -36,15 +36,26 @@ jobs:
           terraform -chdir="$dir" init -backend=false -input=false
           terraform -chdir="$dir" validate
         done
+    - name: Install Trivy
+      # Downloaded directly and checked against a known checksum
+      env:
+        TRIVY_VERSION: 0.69.3
+        TRIVY_SHA256: 1816b632dfe529869c740c0913e36bd1629cb7688bd5634f4a858c1d57c88b75
+      run: |
+        cd "$RUNNER_TEMP"
+        curl -sSfL -o trivy.tar.gz "https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz"
+        echo "${TRIVY_SHA256}  trivy.tar.gz" | sha256sum -c -
+        tar -xzf trivy.tar.gz trivy
+        rm trivy.tar.gz
     - name: Run Trivy IaC scan
-      uses: aquasecurity/trivy-action@v0.35.0
-      with:
-        scan-type: 'config'
-        exit-code: '1'
-        severity: 'CRITICAL,HIGH'
-        version: 'v0.69.3'
-        trivyignores: '.trivyignore'
-        skip-dirs: '.terraform,s3-tf-state/.terraform'
+      run: >-
+        "$RUNNER_TEMP/trivy" config
+        --exit-code 1
+        --severity CRITICAL,HIGH
+        --ignorefile .trivyignore
+        --skip-dirs .terraform,s3-tf-state/.terraform
+        --skip-version-check
+        .
     - name: Summary
       run: echo "### Summary :rocket:" >> $GITHUB_STEP_SUMMARY
 
