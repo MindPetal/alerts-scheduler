@@ -1,4 +1,5 @@
 # AWS alerts scheduler
+[![alerts-scheduler-build](https://github.com/MindPetal/alerts-scheduler/actions/workflows/alerts-scheduler-build.yaml/badge.svg)](https://github.com/MindPetal/alerts-scheduler/actions/workflows/alerts-scheduler-build.yaml)
 
 Terraform and Python for AWS EventBridge Scheduler/Lambda to call GitHub Actions workflows.
 
@@ -17,12 +18,13 @@ This could all be eliminated by just using GitHub Actions built-in cron, but the
 ## Deploy
 Defaults to us-east-1 and MindPetal GitHub org. Override with `make apply REGION=... GH_OWNER=...`.
 
+Load your GitHub App private key from the downloaded `.pem` file. Keep the `.pem` file outside this repo.
+
 ```sh
 export TF_VAR_gh_app_client_id="Iv23li..."
-export TF_VAR_gh_app_private_key="-----BEGIN RSA PRIVATE KEY-----
-...paste the full key here with line breaks intact...
------END RSA PRIVATE KEY-----"
+export TF_VAR_gh_app_private_key="$(cat ~/path/to/github-app.private-key.pem)"
 
 make plan  # creates S3 state bucket, terraform plan
-make apply # terraform apply, writes creds to SSM, IAM role/policy, 
+make apply # terraform apply, writes creds to SSM, IAM role/policy,
            # packages + deploys Lambda, creates EventBridge schedules.
+```

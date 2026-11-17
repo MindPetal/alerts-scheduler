@@ -1,0 +1,44 @@
+version: 2
+updates:
+  # Lambda dependencies (lambda/pyproject.toml and lambda/uv.lock)
+  - package-ecosystem: "uv"
+    directory: "/lambda"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    cooldown:
+      default-days: 7
+    groups:
+      lambda-dependencies:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Terraform providers (aws, archive, null) in both Terraform roots
+  - package-ecosystem: "terraform"
+    directories:
+      - "/"
+      - "/s3-tf-state"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    cooldown:
+      default-days: 7
+    groups:
+      terraform-providers:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Actions used by the build workflow
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    cooldown:
+      default-days: 7
