@@ -17,7 +17,7 @@ permissions:
   contents: read
 
 jobs:
-  terraform-lint:
+  alerts-scheduler-build:
     runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v7.0.1
@@ -36,13 +36,6 @@ jobs:
           terraform -chdir="$dir" init -backend=false -input=false
           terraform -chdir="$dir" validate
         done
-
-  trivy-scan:
-    runs-on: ubuntu-24.04
-    steps:
-    - uses: actions/checkout@v7.0.1
-      with:
-        persist-credentials: false
     - name: Run Trivy IaC scan
       uses: aquasecurity/trivy-action@v0.35.0
       with:
@@ -51,6 +44,9 @@ jobs:
         severity: 'CRITICAL,HIGH'
         version: 'v0.69.3'
         trivyignores: '.trivyignore'
+        skip-dirs: '.terraform,s3-tf-state/.terraform'
+    - name: Summary
+      run: echo "### Summary :rocket:" >> $GITHUB_STEP_SUMMARY
 
   # Fails when .github/workflows/actions.lock is out of sync with the
   # workflows or a locked pin no longer verifies upstream.
